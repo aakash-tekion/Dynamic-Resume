@@ -1,0 +1,135 @@
+.resume{
+    height:100vh;
+    border: 1px solid black;
+    width:70%;
+    margin:50px auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: relative;
+
+}
+body{
+    margin:0;
+    padding: 0;
+}
+.main-container{
+    width:100%;
+
+}
+i{
+    padding-right: 5px;
+}
+
+.contact-container ul{
+    list-style:none;
+    padding-left: 0px;
+}
+.contact-container ul li{
+    margin-top:25px;
+}
+
+.header{
+    color:#b27a56;
+    font-size: 16px;
+    letter-spacing: 1.5px;
+    font-weight: bold;
+}
+#textarea-tag{
+    width:100%;
+}
+.profile-container{
+    position: absolute;
+    top:200px;
+}
+#file-btn{
+    position:absolute;
+    bottom:7px;
+}
+
+.right-part{
+    width:60%;   
+    height:100%;
+}
+.right-part p{
+    
+    margin-left:10px;
+}
+#input-tag{
+    width:80%;
+    height:30px;
+    
+}
+.education-form{
+    
+}
+.left{
+    background-color: #faf9f8;
+    width:40%;
+    height: 95%;
+    padding:20px;
+    padding-left:50px;
+    position:relative;
+}
+.left-ul{
+    position: absolute;
+    top:175px;
+    list-style: none;
+
+}
+.left-ul li{
+    margin-top: 25px;
+}
+
+.right{
+    width:60%;
+    height:95%;
+    padding: 20px;
+    position:relative;
+    
+}
+.image-container{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items:center;
+    border:1px solid black;
+    width:80%;
+    position:absolute;
+    top:25px;
+    height:150px;
+}
+.profile-img{
+    border-radius: 50%;
+    width:100px;
+    height:100px;
+
+    
+}
+.center-row{
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+    align-items:center;
+}
+.center-col{
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+}
+.left-part{
+    height: 100%;
+    width:40%;
+    position: relative;
+}
+.role{
+    color:#b27a56;
+    font-size: 20px; 
+    margin-top:10px;
+}
+.name{
+    color:#302e2a;
+    font-size: 40px;
+    margin-bottom:0px;
+}
