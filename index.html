@@ -10,58 +10,76 @@
 <body>
     <div class='main-container'>
         <div class="resume">
-            <div class="left">
-                <ul class="left-ul">
-                    <li>
-                        <div class="contact-container">
-                            <p class="header">CONTACT</p>
-                                <ul>
-                                    <li class="phone"><i class="fa fa-pencil" id="phone-icon" data-name="phone-icon"></i>Phone :</li>
-                                    <li class="email"><i class="fa fa-pencil" id="email-icon" data-name="email-icon"></i>Email :</li>
-                                    <li class="address"><i class="fa fa-pencil" id="address-icon" data-name="address-icon"></i>Address :</li>
-                                </ul>
-                        </div>
-    
-                    </li>
-                    <li>
-                        <div class="education-container">
-                            <p class="header"><i class="fa fa-pencil" id="education-icon" data-name="education-icon"></i>EDUCATION</p>
-                            <div class="education-list">
-                                
+            <div class="col-1">
+                <div class="left-col-1"></div>
+                <div class="right-col-1"></div>
+                <div class="image-container">
+                    <div class="left-part center-row">
+                        <img class="profile-img" data-name='profile-image-url' src="./profileavatar.jpeg">
+                        <input type="file" id="file-input" placeholder="File" hidden/>
+                        <button id="file-btn">Add</button>
+                    </div>
+                    
+                    <div class="right-part">
+                        <p class="name" data-name="name" >
+                            <i class="fa fa-pencil" id="name-icon" data-name="name-icon" ></i> Name
+                        </p>
+                        <p class="role" data-name="role">
+                            <i class="fa fa-pencil" id="role-icon" data-name="role-icon" ></i> Role
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-2">
+                <div class="left">
+                    <ul class="left-ul">
+                        <li>
+                            <div class="contact-container">
+                                <p class="header">CONTACT</p>
+                                    <ul>
+                                        <li class="phone"><i class="fa fa-pencil" id="phone-icon" data-name="phone-icon"></i>Phone :</li>
+                                        <li class="email"><i class="fa fa-pencil" id="email-icon" data-name="email-icon"></i>Email :</li>
+                                        <li class="address"><i class="fa fa-pencil" id="address-icon" data-name="address-icon"></i>Address :</li>
+                                    </ul>
                             </div>
-                        </div>
-                    </li>
+        
+                        </li>
+                        <li>
+                            <div class="education-container">
+                                <p class="header"><i class="fa fa-pencil" id="education-icon" data-name="education-icon"></i>EDUCATION</p>
+                                <div class="education-list">
+                                    
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="skills-container">
+                                <p class="header"><i class="fa fa-pencil" id="skills-icon"></i>SKILLS</p>
+                                <ul class="skills-ul">   
+                                </ul>
+                            </div>
+                        </li>
+    
+                    </ul>
+                    
+                    
+                </div>
+                <div class="right">
+                    <div class="profile-container">
+                        <p class="header"><i class="fa fa-pencil" id="profile-description-icon" data-name="profile-description-icon" ></i>PERSONAL PROFILE</p>
+                        <p class="profile-description"></p>
+                    </div>
 
-                </ul>
                 
+                </div>
                 
             </div>
-            <div class="right">
-                <div class="profile-container">
-                    <p class="header"><i class="fa fa-pencil" id="profile-description-icon" data-name="profile-description-icon" ></i>PERSONAL PROFILE</p>
-                    <p class="profile-description"></p>
-                </div>
-            
-            </div>
-            <div class="image-container">
-                <div class="left-part center-row">
-                    <img class="profile-img" data-name='profile-image-url' src="./profileavatar.jpeg">
-                    <input type="file" id="file-input" placeholder="File" hidden/>
-                    <button id="file-btn">Add</button>
-                </div>
-                
-                <div class="right-part">
-                    <p class="name" data-name="name" >
-                        <i class="fa fa-pencil" id="name-icon" data-name="name-icon" ></i> Name
-                    </p>
-                    <p class="role" data-name="role">
-                        <i class="fa fa-pencil" id="role-icon" data-name="role-icon" ></i> Role
-                    </p>
-                </div>
+           
+        </div>
                
-
-
-            </div>
+            
     </div>
     <script src = './index.js' ></script>
 </body>

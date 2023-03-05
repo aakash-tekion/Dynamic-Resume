@@ -1,25 +1,43 @@
 .resume{
-    min-height:100vh;
-    max-height: max-content;
     border: 1px solid black;
     width:70%;
     margin:50px auto;
+    /* display: flex;
+    flex-direction: column; */
+    overflow:auto;
+    height:100%
+
+}
+.col-1{
+    width:100%;
+    height:30%;
+    position:relative;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    position: relative;
-
 }
+.col-2{
+    width:100%;
+    min-height:70%;
+    display: flex;
+    flex-direction: row;
+}
+.left-col-1{
+    width:40%;
+    background-color: #faf9f8;
+    
+}
+.right-col-1{
+    width:60%;
+}
+
 body{
     margin:0;
     padding: 0;
 }
 .main-container{
     width:100%;
-    min-height:100vh;
-    max-height: max-content;
-
-
+    height: 100vh;
 }
 i{
     padding-right: 5px;
@@ -41,10 +59,6 @@ i{
 }
 #textarea-tag{
     width:100%;
-}
-.profile-container{
-    position: absolute;
-    top:200px;
 }
 #file-btn{
     position:absolute;
@@ -84,18 +98,12 @@ i{
 .left{
     background-color: #faf9f8;
     width:40%;
-    min-height: 95%;
-    max-height: max-content;
-    padding:20px;
-    padding-left:50px;
-    position:relative;
+    padding:13px;  
+    height: fit-content;
 }
 .left-ul{
-    position: absolute;
-    top:175px;
     list-style: none;
-    padding-left: 0px;
-
+    padding-left: 15px;
 }
 .left-ul li{
     margin-top: 25px;
@@ -103,10 +111,7 @@ i{
 
 .right{
     width:60%;
-    height:95%;
-    padding: 20px;
-    position:relative;
-    
+    padding: 20px; 
 }
 .image-container{
     display: flex;
@@ -115,7 +120,7 @@ i{
     align-items:center;
     border:1px solid black;
     width:80%;
-    position:absolute;
+    position: absolute;
     top:25px;
     height:150px;
 }
@@ -123,8 +128,6 @@ i{
     border-radius: 50%;
     width:100px;
     height:100px;
-
-    
 }
 .center-row{
     display: flex;

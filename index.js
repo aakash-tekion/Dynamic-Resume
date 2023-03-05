@@ -3,6 +3,29 @@ let contactInfoElements = ['#email-icon','#address-icon','#phone-icon']
 let fileInputBtn = document.querySelector('#file-input');
 let month = [ "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December" ];
+function MapFromForm(form){
+    let formData = new FormData(form);
+    let obj = {
+    }
+    for (let [key, value] of formData) {
+        if(key == 'start-year'||key == 'end-year'){
+            let temp = value.split('-');
+            value = month[temp[1]-1]+', '+temp[0]
+        }
+        obj[key] = value;
+    }
+    return obj;
+}
+function findObj(list,obj){
+    let bool=false;
+    let objStr = Object.values(obj).toString().toLowerCase();
+    list.map(ele => {
+        if(Object.values(ele).toString().toLowerCase() === objStr){
+                bool=true;
+        }
+    });
+    return bool;
+}
 function getElement(selector,element){
     console.log(selector+element)
     return document.querySelector(selector+element);
@@ -81,16 +104,23 @@ class EducationInfo{
             }
             obj[key] = value;
         }
-        let bool=false;
-        let objStr = Object.values(obj).toString().toLowerCase();
-        this.educationList.map(ele => {
-            if(Object.values(ele).toString().toLowerCase() === objStr){
-                bool=true;
-            }
-        });
+        let bool = findObj(this.educationList,obj);
         if(!bool){
             this.educationList.push(obj);
         }
+    }
+}
+class SkillsInfo{
+    constructor(){
+        this.skillsList = [];
+    }
+    setSkills(form){
+        let obj = MapFromForm(form)
+        let bool = findObj(this.skillsList,obj);
+        if(!bool){
+            this.skillsList.push(obj);
+        }
+        console.log(this.skillsList);
     }
 }
 //view
@@ -189,6 +219,33 @@ class EducationView{
     }
 
 }
+class SkillsView{
+    constructor(){
+        this.skillsContainer = document.querySelector('.skills-container');
+        this.skillsList = document.querySelector('.skills-ul');
+        this.formContents = [
+            ['skill','text','e.g HTML']
+        ];
+    }
+    skillsListUpdate(model){
+        this.skillsList.innerHTML = '';
+        model.skillsList.map(ele=>{
+            let li = document.createElement('li');
+            li.innerText = ele['skill'];
+            this.skillsList.appendChild(li);
+        });
+    }
+    skillsFormBind(model){
+        if(!document.querySelector('.skills-form')){
+            let form = formGenerator(this.formContents,'skills-form',(event)=>{
+                event.preventDefault();
+                model.setSkills(event.target);
+                this.skillsListUpdate(model);
+            });
+            this.skillsContainer.appendChild(form);
+        }
+    }
+}
 //Controller
 class personalController{
     constructor(model,view){
@@ -214,10 +271,22 @@ class educationController{
         this.view.EducationFormBind(this.model);
     }
 }
+class skillsController{
+    constructor(model,view){
+        this.model = model,
+        this.view = view
+    }
+    skillsInfoHandler(){
+        this.view.skillsFormBind(this.model);
+    }
+}
 let personalModel = new PersonalInfo();
 let personalView = new PersonalView();
 let educationModel = new EducationInfo();
 let educationView = new EducationView();
+let skillsView = new SkillsView();
+let skillsModel = new SkillsInfo();
+let skillsInfoController = new skillsController(skillsModel,skillsView);
 let personalInfoController = new personalController(personalModel,personalView);
 let educationInfoController = new educationController(educationModel,educationView)
 personalInfoElements.map((ele)=>{
@@ -239,4 +308,7 @@ fileInputBtn.addEventListener('change',function(event){
 });
 document.getElementById('education-icon').addEventListener('click',function(){
     educationInfoController.educationInfoHandler();
+});
+attachEvent('click','skills-icon',function(){
+    skillsInfoController.skillsInfoHandler();
 });
