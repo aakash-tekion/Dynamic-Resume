@@ -1,6 +1,8 @@
 let personalInfoElements = ['#name-icon','#role-icon','#profile-description-icon'];
 let contactInfoElements = ['#email-icon','#address-icon','#phone-icon']
 let fileInputBtn = document.querySelector('#file-input');
+let month = [ "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December" ];
 function getElement(selector,element){
     console.log(selector+element)
     return document.querySelector(selector+element);
@@ -23,9 +25,11 @@ function formGenerator(elements,class_name,callfn){
         let child;
         if(ele[1]=='select'){
             child = document.createElement('select');
+            child.setAttribute('name',ele[0]);
             ele[3].map((opt)=>{
                 let temp = document.createElement('option');
                 temp.setAttribute('value',opt);
+                temp.text = opt;
                 child.appendChild(temp)
             })
         }
@@ -37,6 +41,9 @@ function formGenerator(elements,class_name,callfn){
         }
         form.appendChild(child);
     });
+    let submitBtn = document.createElement('input');
+    submitBtn.setAttribute('type','submit');
+    form.appendChild(submitBtn);
     form.addEventListener('submit',callfn);
     form.classList.add(class_name);
     return form;
@@ -63,10 +70,26 @@ class EducationInfo{
     constructor(){
         this.educationList = [];
     }
-    setEducationDetails(){
+    setEducationDetails(form){
+        let formData = new FormData(form);
         let obj = {
-            'institution_name':'',
-
+        }
+        for (let [key, value] of formData) {
+            if(key == 'start-year'||key == 'end-year'){
+                let temp = value.split('-');
+                value = month[temp[1]-1]+', '+temp[0]
+            }
+            obj[key] = value;
+        }
+        let bool=false;
+        let objStr = Object.values(obj).toString().toLowerCase();
+        this.educationList.map(ele => {
+            if(Object.values(ele).toString().toLowerCase() === objStr){
+                bool=true;
+            }
+        });
+        if(!bool){
+            this.educationList.push(obj);
         }
     }
 }
@@ -125,21 +148,44 @@ class EducationView{
         this.educationListElement = getElement('.','education-list');
         this.formContents = [
             ['institution-name','text','Institution Name'],
+            ['location','text','Location'],
             ['degree','select','Degree',['Higher Secondary Education','Bachelor of Arts','Bachelor of Science',
             'Bachelor of Engineering','Master of Engineering','Master of Arts','Master of Science','BBA','MBA',
             'Ph.D.']],
             ['field-of-study','text','Field of study'],
-            ['location','text','Location'],
             ['start-year','month','Start'],
             ['end-year','month','End']
         ]
     }
-    EducationFormBind(model){
-
-        let educationForm = formGenerator(this.formContents,'education-form',function(event){
-            event.preventDefault();
+    EducationListUpdate(model){
+        this.educationListElement.innerHTML='';
+        model.educationList.map(ele=>{
+            let parent=document.createElement('div');
+            let ele1 = document.createElement('p');
+            let ele2 = document.createElement('p');
+            let ele3 = document.createElement('p');
+            ele1.innerText = ele['institution-name']+', '+ele['location'];
+            ele2.innerText = ele['degree']+', '+ele['field-of-study'];
+            ele3.innerText = ele['start-year']+' - '+ele['end-year'];
+            ele3.style.color='#b27a56';
+            parent.appendChild(ele3);
+            parent.appendChild(ele1);
+            parent.appendChild(ele2);
+            this.educationListElement.appendChild(parent);      
         });
-        this.educationListElement.appendChild(educationForm);
+    }
+    
+    EducationFormBind(model){
+        if(!document.querySelector('.education-form')){
+            let educationForm = formGenerator(this.formContents,'education-form',(event)=>{
+                event.preventDefault();
+                model.setEducationDetails(event.target);
+                this.EducationListUpdate(model);
+                
+            });
+            this.educationListElement.appendChild(educationForm);
+        }
+        
     }
 
 }
