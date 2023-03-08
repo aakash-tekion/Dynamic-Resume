@@ -1,5 +1,6 @@
 export let month = [ "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December" ];
+
 export function MapFromForm(form){
     let formData = new FormData(form);
     let obj = {
@@ -13,7 +14,7 @@ export function MapFromForm(form){
     }
     return obj;
 }
-export function formClose(controller){
+export function formClose(personalController,contactController,profileController){
     let forms = ['work-experience-form','skills-form','education-form'];
     forms.map(ele => {
         let form = document.querySelector('.'+ele)
@@ -23,9 +24,20 @@ export function formClose(controller){
     })
     let personalInputs = document.querySelectorAll('.input-tag')
     for(let ele of personalInputs){
-        controller.replacePrevStateHandler(ele.getAttribute('id'));
+        let controllerAttribute = ele.getAttribute('data-controller');
+        if(controllerAttribute === 'personal-controller'){
+            personalController.replacePrevStateHandler(ele.getAttribute('id'));
+        }
+        else if(controllerAttribute === 'contact-controller'){
+            contactController.replacePrevStateHandler(ele.getAttribute('id'))
+        }   
         ele.remove();
     };
+    let profileInput = document.querySelector('#textarea-tag');
+    if(profileInput){
+        profileController.replacePrevStateHandler('profile-description')
+        profileInput.remove();
+    }
 }
 export function findObj(list,obj){
     let bool=false;
@@ -54,12 +66,13 @@ export function getDataAttribute(event){
     temp.pop();
     return temp.join('-')
 }
-export function getInputElement(type,placeholder = '',id,classname=''){
+export function getInputElement(type,placeholder = '',id,classname='',controller=''){
     let input = document.createElement('input');
     input.setAttribute('placeholder',placeholder);
     input.setAttribute('type',type);
     input.setAttribute('id',id);
     input.setAttribute('class',classname);
+    input.setAttribute('data-controller',controller)
     // let input = `<input type=${type} id='${id}' placeholder = '${placeholder}'}/>`
     return input
 }
