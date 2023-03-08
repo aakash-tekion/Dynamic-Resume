@@ -11,10 +11,9 @@ export class WorkExperienceInfo{
             this.WorkExperienceList.push(obj);
         }
     }
-    removeWorkDetails(obj){
-        let objStr = JSON.stringify(obj);
+    removeWorkDetails(obj){  
         this.WorkExperienceList = this.WorkExperienceList.filter((ele)=>{
-            return JSON.stringify(ele)!== objStr;
+            return JSON.stringify(ele)!== obj;
         })
     }
 }
@@ -38,9 +37,14 @@ export class WorkExperienceView{
         let start;
         model.WorkExperienceList.map(ele=>{
             let parent = document.createElement('li')
-            let firstchild = document.createElement('p');
-            firstchild.textContent = ele['start-year']+' - '+ele['end-year'];
-            firstchild.style.color = '#b27a56';
+
+            let firstchild = document.createElement('div');
+            let p = document.createElement('p');
+            p.textContent = ele['start-year']+' - '+ele['end-year'];
+            p.style.color = '#b27a56';
+            p.style.display = 'inline-block';
+            p.style.margin=0;
+            firstchild.appendChild(p);
             parent.appendChild(firstchild);
             for(let [key,value] of Object.entries(ele)){
                 let child;
@@ -61,8 +65,9 @@ export class WorkExperienceView{
     addDeleteElement(){
         if(this.WorkExperienceList.hasChildNodes()){
             for(let div of this.WorkExperienceList.childNodes){
-                let icon = getIcon('fa-trash','delete-icon','work')
-                div.insertBefore(icon,div.firstChild);
+                let icon = getIcon('fa-trash','delete-icon','work');
+                icon.style.display = 'inline-block';
+                div.firstChild.insertBefore(icon,div.firstChild.firstChild);
             }
         }
     }
@@ -95,6 +100,5 @@ export class workExperienceController{
     }
     deleteElementFromModel(obj){
         this.model.removeWorkDetails(obj);
-        console.log(this.model);
     }
 }

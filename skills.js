@@ -12,9 +12,8 @@ export class SkillsInfo{
         }
     }
     removeSkillsDetails(obj){
-        let objStr = JSON.stringify(obj);
         this.skillsList = this.skillsList.filter((ele)=>{
-            return JSON.stringify(ele)!== objStr;
+            return JSON.stringify(ele)!== obj;
         })
     }
 }
@@ -28,11 +27,25 @@ export class SkillsView{
             ['skill','text','e.g HTML']
         ];
     }
+    addStars(rate){
+        let str=''
+        for(let i=0;i<rate;i++){
+            str+='⭐'
+        }
+        return str
+    }
     skillsListUpdate(model){
         this.skillsList.innerHTML = '';
         model.skillsList.map(ele=>{
             let li = document.createElement('li');
-            li.innerText = ele['skill'];
+            let span1 = document.createElement('span');
+            span1.innerText = ele['skill'];
+            let span2 = document.createElement('span');
+            span2.appendChild(document.createTextNode(this.addStars(ele['rate'])));
+            span2.style.float='right';
+            li.style.width='70%';
+            li.appendChild(span1);
+            li.appendChild(span2);
             li.setAttribute('data-obj',JSON.stringify(ele));
             this.skillsList.appendChild(li);
         });
@@ -48,13 +61,27 @@ export class SkillsView{
     }
     skillsFormBind(model){
         if(!document.querySelector('.skills-form')){
-            let form = formGenerator(this.formContents,'skills-form',(event)=>{
+            let form  = document.createElement('form');
+            form.innerHTML = `
+                <input class='form-input' type='text' placeholder='e.g. HTML' name = 'skill' />
+                <div class='center-row'>
+                    <input type='range' id='rate-input' name='rate' min='1' max='5' value='3' step='1' />
+                    <span id='rate-value'>3</span>
+                </div>
+                <button class='form-button' type='submit'>Add</button>
+            `;
+            form.addEventListener('submit',(event)=>{
                 event.preventDefault();
                 model.setSkills(event.target);
                 this.skillsListUpdate(model);
                 event.target.remove();
             });
+            form.classList.add('skills-form');
             this.skillsContainer.appendChild(form);
+            let span = document.getElementById('rate-value')
+            document.getElementById('rate-input').addEventListener('input',function(event){
+                span.textContent = event.target.value;
+            })
         }
         else{
             document.querySelector('.skills-form').remove();
@@ -72,7 +99,6 @@ export class skillsController{
     }
     deleteElementFromModel(obj){
         this.model.removeSkillsDetails(obj);
-        console.log(this.model);
     }
     addDeleteHandler(){
         this.view.addDeleteElement()

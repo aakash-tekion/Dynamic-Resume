@@ -11,8 +11,6 @@
     width:70%;
     padding:10px;
 }
-
-
 .skills-ul{
     list-style: none;
     padding-left:5px
@@ -96,6 +94,7 @@ i{
     margin-top: 10px;
     display:block;
 }
+
 .form-select{
     padding:10px;
     width:96%;
@@ -159,6 +158,16 @@ i{
     flex-direction: row;
     justify-content:center;
     align-items:center;
+}
+#rate-input{
+    width:80%;
+    margin-top:10px;
+    color:#b27a56;
+}
+#rate-value{
+    width:20%;
+    text-align: center;
+    margin-top:10px;
 }
 .center-col{
     display: flex;

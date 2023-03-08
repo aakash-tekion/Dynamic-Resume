@@ -46,6 +46,7 @@ export class EducationView{
         this.educationListElement.innerHTML='';
         model.educationList.map(ele=>{
             let parent=document.createElement('div');
+            let inner=document.createElement('div');
             let ele1 = document.createElement('p');
             let ele2 = document.createElement('p');
             let ele3 = document.createElement('p');
@@ -53,7 +54,10 @@ export class EducationView{
             ele2.innerText = ele['degree']+', '+ele['field-of-study'];
             ele3.innerText = ele['start-year']+' - '+ele['end-year'];
             ele3.style.color='#b27a56';
-            parent.appendChild(ele3);
+            ele3.style.display = 'inline-block';
+            ele3.style.margin=0;
+            inner.appendChild(ele3);
+            parent.appendChild(inner);
             parent.appendChild(ele1);
             parent.appendChild(ele2);
             parent.setAttribute('data-obj',JSON.stringify(ele));
@@ -62,7 +66,6 @@ export class EducationView{
     }
     
     EducationFormBind(model){
-        
             let educationForm = formGenerator(this.formContents,'education-form',(event)=>{
                 event.preventDefault();
                 model.setEducationDetails(event.target);
@@ -70,15 +73,14 @@ export class EducationView{
                 event.target.remove();
                 
             });
-            this.educationListElement.appendChild(educationForm);
-        
-        
+            this.educationListElement.appendChild(educationForm);   
     }
     addDeleteElement(){
         if(this.educationListElement.hasChildNodes()){
             for(let div of this.educationListElement.childNodes){
-                let icon = getIcon('fa-trash','delete-icon','education')
-                div.insertBefore(icon,div.firstChild);
+                let icon = getIcon('fa-trash','delete-icon','education');
+                icon.style.display = 'inline-block';
+                div.firstChild.insertBefore(icon,div.firstChild.firstChild);
             }
         }
     }
@@ -97,7 +99,6 @@ export class educationController{
     }
     deleteElementFromModel(obj){
         this.model.removeEducationDetails(obj);
-        console.log(this.model);
     }    
 }
 

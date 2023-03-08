@@ -19,13 +19,7 @@ export class PersonalInfo{
 }
 //view
 export class PersonalView{
-    constructor(){
-        this.placeholderMapping = {
-            'name':'e.g. Aakash',
-            'role':'e.g. Software Engineer'
-        }
-
-    }   
+  
     removeElement(element,model){
         model.resetPersonalDetails(element);
         let htmlElement = getElement('.',element);
@@ -58,8 +52,8 @@ export class PersonalView{
         if(!getElement('#',prev+'-input')){
             element.innerHTML = '';
             element.appendChild(iconElement);
-            element.appendChild(getInputElement('text', this.placeholderMapping[prev],prev+'-input','input-tag','personal-controller'));
-            attachEvent('change',prev+'-input',function(event){
+            element.appendChild(getInputElement('text', model.user[prev] === ''?'':model.user[prev],prev+'-input','input-tag','personal-controller'));
+            attachEvent('blur',prev+'-input',function(event){
                 model.setPersonalDetails(prev,event.target.value);
                 element.innerHTML = '';
                 element.appendChild(iconElement);

@@ -66,9 +66,9 @@ export function getDataAttribute(event){
     temp.pop();
     return temp.join('-')
 }
-export function getInputElement(type,placeholder = '',id,classname='',controller=''){
+export function getInputElement(type,value = '',id,classname='',controller=''){
     let input = document.createElement('input');
-    input.setAttribute('placeholder',placeholder);
+    input.setAttribute('value',value);
     input.setAttribute('type',type);
     input.setAttribute('id',id);
     input.setAttribute('class',classname);

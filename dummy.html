@@ -5,31 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        #hidden-file{
-            visibility: hidden;
-        }
-    </style>
 </head>
 <body>
- 
-        <input id="hidden-file" type = 'file'/>
-        <button id = 'btn'>
-            <img src="./profileavatar.jpeg" />
-
-        </button>
- 
+    <div class="slider">
+        <input id='slider-input' type="range" min="0" max="5" step="1"/>
+    </div>
     <script>
-        document.getElementById('btn').addEventListener('click',function(event){
-            
-            console.log("hello")
-            document.getElementById('hidden-file').click()
+        document.querySelector('#slider-input').addEventListener('input',function(event){
+            console.log(event.target.value);
         })
-        document.getElementById('hidden-file').addEventListener('click',function(event){
-            
-        })
-
     </script>
-    
 </body>
 </html>

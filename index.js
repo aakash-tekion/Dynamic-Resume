@@ -125,15 +125,20 @@ attachEvent('click','main-delete-btn',function(){
     for(let trash of document.querySelectorAll('#delete-icon')){
         trash.addEventListener('click',function(event){
             let model = event.target.getAttribute('data-model');
-            let data = event.target.parentElement.getAttribute('data-obj');
-            event.target.parentElement.remove();
+            
             if(model === 'work'){
+                let data = event.target.parentElement.parentElement.getAttribute('data-obj');
+                event.target.parentElement.parentElement.remove();
                 workInfoController.deleteElementFromModel(data);
             }
             else if(model === 'skills'){
+                let data = event.target.parentElement.getAttribute('data-obj');
+                event.target.parentElement.remove();
                 skillsInfoController.deleteElementFromModel(data);
             }
             else if(model === 'education'){
+                let data = event.target.parentElement.parentElement.getAttribute('data-obj');
+                event.target.parentElement.parentElement.remove();
                 educationInfoController.deleteElementFromModel(data);
             }
             
@@ -144,8 +149,14 @@ attachEvent('click','main-edit-btn',function(){
     //formClose();
     let icons = document.getElementsByTagName('i');
     for(let ele of icons){
-        ele.classList.add('fa-pencil');
-        ele.classList.remove('fa-trash');
+        if(ele.getAttribute('id') === 'delete-icon'){
+            ele.remove();
+        }
+        else{
+            ele.classList.remove('fa-trash');
+            ele.classList.add('fa-pencil');
+        }
+       
     };
 })
 

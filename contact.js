@@ -54,9 +54,9 @@ export class ContactView{
             let span = document.createElement('span');
             span.appendChild(document.createTextNode(prev.charAt(0).toUpperCase()+prev.slice(1)+" : "));
             
-            span.appendChild(getInputElement('text',this.placeholderMapping[prev],prev+'-input','input-tag','contact-controller'))
+            span.appendChild(getInputElement('text',model.user[prev] === ''?'':model.user[prev],prev+'-input','input-tag','contact-controller'))
             element.appendChild(span);
-            attachEvent('change',prev+'-input',function(event){
+            attachEvent('blur',prev+'-input',function(event){
                 console.log(event.target.value)
                 element.innerHTML = '';
                 element.appendChild(iconElement);

@@ -36,7 +36,7 @@ export class ProfileView{
         if(!getElement('#','textarea-tag')){
             element.innerHTML = `<textarea rows="5" cols="50" id='textarea-tag'>
             </textarea>`;
-            attachEvent('change','textarea-tag',function(event){
+            attachEvent('blur','textarea-tag',function(event){
                 model.setPersonalDescription(prev,event.target.value);
                 element.innerHTML = '';
                 element.appendChild(document.createTextNode(model.user[prev]));
