@@ -29,10 +29,19 @@ export function formClose(controller){
 }
 export function findObj(list,obj){
     let bool=false;
-    let objStr = JSON.stringify(obj);
+    let objStr = '';
+    for(let [key,value] of Object.entries(obj)){
+        objStr+=(key+':'+value.toLowerCase());
+        objStr+=';'
+    }
     list.map(ele => {
-        if(JSON.stringify(ele) === objStr){
-            bool=true;
+        let temp = '';
+        for(let [key,value] of Object.entries(ele)){
+            temp+=(key+':'+value.toLowerCase());
+            temp+=';'
+        }
+        if(temp === objStr){
+            bool = true;
         }
     });
     return bool;

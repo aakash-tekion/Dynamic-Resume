@@ -60,7 +60,6 @@ export class PersonalView{
 
     }
     replacePrevstate(elementId,model){
-        console.log(model,elementId)
         elementId = elementId.split('-')[0];
         let element = document.querySelector('.'+elementId).lastChild;
         let parent = document.querySelector('.'+elementId)
@@ -69,7 +68,14 @@ export class PersonalView{
             parent.appendChild(document.createTextNode(elementId.charAt(0).toUpperCase()+elementId.slice(1)+" : "+model.user[elementId]))
         }
         else{
-            parent.appendChild(document.createTextNode(model.user[elementId]))
+            console.log(model)
+            if(model.user[elementId]!==''){
+                parent.appendChild(document.createTextNode(model.user[elementId]))
+            }
+            else{
+                parent.appendChild(document.createTextNode(elementId.charAt(0).toUpperCase()+elementId.slice(1)))
+            }
+            
         }  
     }
     
@@ -128,7 +134,15 @@ export class PersonalView{
                 else{
                     getElement('#',prev+'-input').remove();
                     element.lastChild.innerHTML = '';
-                    element.lastChild.appendChild(document.createTextNode(model.user[prev]));
+                    if(model.user[prev]===''){
+                        let span = document.createElement('span');
+                        span.appendChild(document.createTextNode(prev.charAt(0).toUpperCase()+prev.slice(1)));
+                        element.appendChild(span)
+                    }
+                    else{
+                        element.lastChild.appendChild(document.createTextNode(model.user[prev]));
+                    }
+                   
                 } 
             }
             else{
