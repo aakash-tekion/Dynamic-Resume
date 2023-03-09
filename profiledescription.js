@@ -28,6 +28,23 @@ export class ProfileView{
             element.appendChild(document.createTextNode(model.user[elementId]));
         }
     }
+    removeIcon(){
+        let icon = document.querySelector('#profile-description-icon');
+        if(icon){
+            icon.remove()
+        }
+    }
+    addIcon(className){
+        let parent = document.querySelector('.profile-container');
+        this.removeIcon();
+        let icon = getIcon(className,'profile-description-icon','','profile-description-icon');
+        let firstChild = parent.firstChild.nextSibling;
+        firstChild.insertBefore(icon,firstChild.firstChild);
+    }
+    addDeleteIcon(className,model){
+        this.removeIcon(model);
+        this.addIcon(className);
+    }
     
     elementHandler(element,model){
         let prev = element;
@@ -65,5 +82,14 @@ export class profileController{
     } 
     replacePrevStateHandler(elementId){
         this.view.replacePrevstate(elementId,this.model);
+    }
+    removeIconHandler(){
+        this.view.removeIcon();
+    }
+    addEditIconHandler(){
+        this.view.addIcon('fa-pencil');
+    }
+    addDeleteIconHandler(){
+        this.view.addDeleteIcon('fa-trash',this.model);
     }
 }

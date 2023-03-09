@@ -29,6 +29,7 @@ export class EducationInfo{
 //View
 export class EducationView{
     constructor(){
+        this.educationContainer = getElement('.','education-container');
         this.educationListElement = getElement('.','education-list');
         this.educationListElement.innerHTML = '';
         this.formContents = [
@@ -41,6 +42,23 @@ export class EducationView{
             ['start-year','month','From'],
             ['end-year','month','Till']
         ]
+    }
+    removeIcon(){
+        let icon = document.querySelector('#education-icon');
+        if(icon){
+            icon.remove()
+        }
+        for(let div of this.educationListElement.childNodes){
+            if(div.firstChild.firstChild.tagName === 'I'){
+                div.firstChild.firstChild.remove();
+            }  
+        }
+    }
+    addIcon(className){
+        this.removeIcon();
+        let newIcon = getIcon(className,'education-icon');
+        let header = this.educationContainer.firstChild.nextSibling;
+        header.insertBefore(newIcon,header.firstChild);    
     }
     EducationListUpdate(model){
         this.educationListElement.innerHTML='';
@@ -75,10 +93,14 @@ export class EducationView{
             });
             this.educationListElement.appendChild(educationForm);   
     }
-    addDeleteElement(){
+    addDeleteElement(className){
+        let icon = document.querySelector('#education-icon');
+        if(icon){
+            icon.remove();
+        }
         if(this.educationListElement.hasChildNodes()){
             for(let div of this.educationListElement.childNodes){
-                let icon = getIcon('fa-trash','delete-icon','education');
+                let icon = getIcon(className,'delete-icon','education');
                 icon.style.display = 'inline-block';
                 div.firstChild.insertBefore(icon,div.firstChild.firstChild);
             }
@@ -94,12 +116,18 @@ export class educationController{
     educationInfoHandler(){
         this.view.EducationFormBind(this.model);
     }
-    addDeleteHandler(){
-        this.view.addDeleteElement();
+    addDeleteIconHandler(){
+        this.view.addDeleteElement('fa-trash');
     }
     deleteElementFromModel(obj){
         this.model.removeEducationDetails(obj);
     }    
+    removeIconHandler(){
+        this.view.removeIcon();
+    }
+    addEditIconHandler(){
+        this.view.addIcon('fa-pencil');
+    }
 }
 
 

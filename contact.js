@@ -18,14 +18,31 @@ export class ContactInfo{
     }
 }
 //view
-export class ContactView{
-    constructor(){
-        this.placeholderMapping = {
-            'email':'e.g. aakash@gmail.com',
-            'phone':'e.g. +91',
-            'address':'e.g. ACS layout,Bengaluru'
+export class ContactView{ 
+    removeIcon(model){
+        for(let key of Object.keys(model.user)){
+            let element = document.querySelector(`#${key}-icon`);
+            if(element){
+                element.remove()
+            }
         }
-    }   
+
+    }
+    addIcon(className,model){
+        this.removeIcon(model);
+        for(let key of Object.keys(model.user)){
+            let parent = document.querySelector(`.${key}`);
+            let icon = getIcon(className,`${key}-icon`,'',`${key}-icon`,'');
+            // console.log(parent,parent.firstChild);
+            parent.insertBefore(icon,parent.firstChild);
+        }
+        
+
+    }
+    addDeleteIcon(className,model){
+        this.removeIcon(model);
+        this.addIcon(className,model);
+    }
     removeElement(element,model){
         model.resetContactDetails(element);
         let htmlElement = getElement('.',element);
@@ -90,5 +107,14 @@ export class contactController{
     } 
     replacePrevStateHandler(elementId){
         this.view.replacePrevstate(elementId,this.model);
+    }
+    removeIconHandler(){
+        this.view.removeIcon(this.model);
+    }
+    addEditIconHandler(){
+        this.view.addIcon('fa-pencil',this.model);
+    }
+    addDeleteIconHandler(){
+        this.view.addDeleteIcon('fa-trash',this.model);
     }
 }

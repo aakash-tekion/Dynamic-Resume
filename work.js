@@ -32,6 +32,25 @@ export class WorkExperienceView{
             ['end-year','month','Till']
         ]
     }
+    
+    removeIcon(){
+        let icon = document.querySelector('#work-icon');
+        if(icon){
+            icon.remove()
+        }
+        for(let div of this.WorkExperienceList.childNodes){
+            if(div.firstChild.firstChild.tagName === 'I'){
+                div.firstChild.firstChild.remove();
+            }  
+        }
+    }
+    addIcon(className){
+        this.removeIcon();
+        let newIcon = getIcon(className,'work-icon');
+        let header = this.WorkExperienceContainer.firstChild.nextSibling;
+        header.insertBefore(newIcon,header.firstChild);
+    }
+    
     workListUpdate(model){
         this.WorkExperienceList.innerHTML = '';
         let start;
@@ -62,10 +81,14 @@ export class WorkExperienceView{
         });
 
     }
-    addDeleteElement(){
+    addDeleteIcon(className){
+        let icon = document.querySelector('#work-icon');
+        if(icon){
+            icon.remove();
+        }
         if(this.WorkExperienceList.hasChildNodes()){
             for(let div of this.WorkExperienceList.childNodes){
-                let icon = getIcon('fa-trash','delete-icon','work');
+                let icon = getIcon(className,'delete-icon','work');
                 icon.style.display = 'inline-block';
                 div.firstChild.insertBefore(icon,div.firstChild.firstChild);
             }
@@ -95,10 +118,16 @@ export class workExperienceController{
     WorkExperienceInfoHandler(){
         this.view.workExperienceFormBind(this.model);
     }
-    addDeleteHandler(){
-        this.view.addDeleteElement();
+    addDeleteIconHandler(){
+        this.view.addDeleteIcon('fa-trash');
     }
     deleteElementFromModel(obj){
         this.model.removeWorkDetails(obj);
+    }
+    removeIconHandler(){
+        this.view.removeIcon();
+    }
+    addEditIconHandler(){
+        this.view.addIcon('fa-pencil');
     }
 }

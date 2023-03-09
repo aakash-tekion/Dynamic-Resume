@@ -77,7 +77,10 @@ export function getInputElement(type,value = '',id,classname='',controller=''){
     return input
 }
 export function attachEvent(event,elementid,callfn){
-    document.getElementById(elementid).addEventListener(event,callfn);
+    let element = document.getElementById(elementid)
+    if(element){
+        element.addEventListener(event,callfn);
+    }
 }
 export function formGenerator(elements,class_name,callfn){
     let form = document.createElement('form');
@@ -125,8 +128,12 @@ export function formGenerator(elements,class_name,callfn){
 }
 export function getIcon(classname,id,data='',name=''){
     let icon = document.createElement('i');
-    icon.setAttribute('id',id);
-    icon.setAttribute('data-model',data);
+    if(id!==""){
+        icon.setAttribute('id',id);
+    }
+    if(data!==''){
+        icon.setAttribute('data-model',data);
+    }
     if(name!==''){
         icon.setAttribute('data-name',name);
     }

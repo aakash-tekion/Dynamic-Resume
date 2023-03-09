@@ -30,9 +30,26 @@ export class SkillsView{
     addStars(rate){
         let str=''
         for(let i=0;i<rate;i++){
-            str+='⭐'
+            str+='⭐ '
         }
         return str
+    }
+    removeIcon(){
+        let icon = document.querySelector('#skills-icon');
+        if(icon){
+            icon.remove()
+        }
+        for(let div of this.skillsList.childNodes){
+            if(div.firstChild.tagName === 'I'){
+                div.firstChild.remove();
+            }  
+        }
+    }
+    addIcon(className){
+        this.removeIcon();
+        let newIcon = getIcon(className,'skills-icon');
+        let header = this.skillsContainer.firstChild.nextSibling;
+        header.insertBefore(newIcon,header.firstChild);
     }
     skillsListUpdate(model){
         this.skillsList.innerHTML = '';
@@ -50,10 +67,14 @@ export class SkillsView{
             this.skillsList.appendChild(li);
         });
     }
-    addDeleteElement(){
+    addDeleteElement(className){
+        let icon = document.querySelector('#skills-icon');
+        if(icon){
+            icon.remove();
+        }
         if(this.skillsList.hasChildNodes()){
             for(let li of this.skillsList.childNodes){
-                let icon = getIcon('fa-trash','delete-icon','skills')
+                let icon = getIcon(className,'delete-icon','skills')
                 li.insertBefore(icon,li.firstChild);
             }
         }
@@ -100,8 +121,13 @@ export class skillsController{
     deleteElementFromModel(obj){
         this.model.removeSkillsDetails(obj);
     }
-    addDeleteHandler(){
-        this.view.addDeleteElement()
+    addDeleteIconHandler(){
+        this.view.addDeleteElement('fa-trash');
     }
-
+    removeIconHandler(){
+        this.view.removeIcon();  
+    }
+    addEditIconHandler(){
+        this.view.addIcon('fa-pencil');
+    }
 }

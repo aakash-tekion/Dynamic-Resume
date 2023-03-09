@@ -19,6 +19,10 @@ export class PersonalInfo{
 }
 //view
 export class PersonalView{
+    constructor(){
+        this.name = getElement('.','name');
+        this.role = getElement('.','role');
+    }
   
     removeElement(element,model){
         model.resetPersonalDetails(element);
@@ -29,6 +33,32 @@ export class PersonalView{
         let span = document.createElement('span');
         span.appendChild(document.createTextNode(element.charAt(0).toUpperCase()+element.slice(1)));
         htmlElement.appendChild(span);
+    }
+    addIcon(className){
+        let icon = document.querySelector('#name-icon');
+        if(icon){
+            icon.remove();
+        }
+        let newIcon = getIcon(className,'name-icon','','name-icon');
+        this.name.insertBefore(newIcon,this.name.firstChild);
+        icon = document.querySelector('#role-icon');
+        if(icon){
+            icon.remove();
+        }
+        newIcon = getIcon(className,'role-icon','','role-icon');
+        this.role.insertBefore(newIcon,this.role.firstChild);
+    }
+    removeIcon(model){
+        for(let key of Object.keys(model.user)){
+            let element = document.querySelector(`#${key+'-icon'}`);
+            if(element){
+                element.remove();
+            }
+        }
+    }
+    addDeleteIcon(className,model){
+        this.removeIcon(model);
+        this.addIcon(className);
     }
     replacePrevstate(elementId,model){
         elementId = elementId.split('-')[0];
@@ -94,5 +124,14 @@ export class personalController{
     } 
     replacePrevStateHandler(elementId){
         this.view.replacePrevstate(elementId,this.model);
+    }
+    removeIconHandler(){
+        this.view.removeIcon(this.model);
+    }
+    addEditIconHandler(){
+        this.view.addIcon('fa-pencil');
+    }
+    addDeleteIconHandler(){
+        this.view.addDeleteIcon('fa-trash',this.model);
     }
 }
