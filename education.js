@@ -62,7 +62,7 @@ export class EducationView{
     }
     EducationListUpdate(model){
         this.educationListElement.innerHTML='';
-        model.educationList.map(ele=>{
+        model.educationList.forEach(ele=>{
             let parent=document.createElement('div');
             let inner=document.createElement('div');
             let ele1 = document.createElement('p');
@@ -100,9 +100,12 @@ export class EducationView{
         }
         if(this.educationListElement.hasChildNodes()){
             for(let div of this.educationListElement.childNodes){
-                let icon = getIcon(className,'delete-icon','education');
-                icon.style.display = 'inline-block';
-                div.firstChild.insertBefore(icon,div.firstChild.firstChild);
+                if(div.firstChild.firstChild && div.firstChild.firstChild.tagName !== 'I'){
+                    let icon = getIcon(className,'delete-icon','education');
+                    icon.style.display = 'inline-block';
+                    div.firstChild.insertBefore(icon,div.firstChild.firstChild);
+                }
+                
             }
         }
     }
@@ -126,7 +129,7 @@ export class educationController{
         this.view.removeIcon();
     }
     addEditIconHandler(){
-        this.view.addIcon('fa-pencil');
+        this.view.addIcon('fa-university');
     }
 }
 

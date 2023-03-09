@@ -33,25 +33,25 @@ fileInputBtn.addEventListener('change',function(event){
     document.querySelector('.profile-img').src = URL.createObjectURL(event.target.files[0]);
 });
 function eventHandlers(){
-    personalInfoElements.map((ele)=>{
+    personalInfoElements.forEach((ele)=>{
         let element = document.querySelector(ele);
         element.addEventListener('click',function(event){
-            if(element.classList.contains('fa-pencil')){
-                personalInfoController.personalInfoHandler(getDataAttribute(event));
-            }
-            else if(element.classList.contains('fa-trash')){
+            if(element.classList.contains('fa-trash')){
                 personalInfoController.deleteHandler(getDataAttribute(event));
+            }
+            else{
+                personalInfoController.personalInfoHandler(getDataAttribute(event));
             }
         });   
     })
-    contactInfoElements.map((ele)=>{
+    contactInfoElements.forEach((ele)=>{
         let element = document.querySelector(ele);
         element.addEventListener('click',function(event){
-            if(element.classList.contains('fa-pencil')){
-                contactInfoController.contactInfoHandler(getDataAttribute(event));
-            }
-            else if(element.classList.contains('fa-trash')){
+            if(element.classList.contains('fa-trash')){
                 contactInfoController.deleteHandler(getDataAttribute(event));
+            }
+            else{
+                contactInfoController.contactInfoHandler(getDataAttribute(event));
             }
         });
     });
@@ -66,11 +66,11 @@ function eventHandlers(){
         }
     });
     attachEvent('click','profile-description-icon',function(event){
-        if(event.target.classList.contains('fa-pencil')){
-            profileDescriptionController.profileDescriptionHandler(getDataAttribute(event));
-        }
-        else if(event.target.classList.contains('fa-trash')){
+        if(event.target.classList.contains('fa-trash')){
             profileDescriptionController.deleteHandler(getDataAttribute(event));
+        }
+        else{
+            profileDescriptionController.profileDescriptionHandler(getDataAttribute(event));
         }
     });
     attachEvent('click','skills-icon',function(){
@@ -105,7 +105,6 @@ attachEvent('click','main-delete-btn',function(){
     for(let trash of document.querySelectorAll('#delete-icon')){
         trash.addEventListener('click',function(event){
             let model = event.target.getAttribute('data-model');
-            
             if(model === 'work'){
                 let data = event.target.parentElement.parentElement.getAttribute('data-obj');
                 event.target.parentElement.parentElement.remove();

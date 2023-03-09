@@ -4,9 +4,19 @@ export class SkillsInfo{
     constructor(){
         this.skillsList = [];
     }
+    findObj(obj){
+        let bool = false;
+        this.skillsList.forEach((ele)=> {
+            if(ele['skill'].toLowerCase() === obj['skill'].toLowerCase()){
+                ele['rate'] = obj['rate'];
+                bool = true;
+            } 
+        });
+        return bool;
+    }
     setSkills(form){
         let obj = MapFromForm(form)
-        let bool = findObj(this.skillsList,obj);
+        let bool = this.findObj(obj);
         if(!bool){
             this.skillsList.push(obj);
         }
@@ -53,7 +63,7 @@ export class SkillsView{
     }
     skillsListUpdate(model){
         this.skillsList.innerHTML = '';
-        model.skillsList.map(ele=>{
+        model.skillsList.forEach(ele=>{
             let li = document.createElement('li');
             let span1 = document.createElement('span');
             span1.innerText = ele['skill'];
@@ -74,8 +84,11 @@ export class SkillsView{
         }
         if(this.skillsList.hasChildNodes()){
             for(let li of this.skillsList.childNodes){
-                let icon = getIcon(className,'delete-icon','skills')
-                li.insertBefore(icon,li.firstChild);
+                if(li.firstChild.tagName !== 'I'){
+                    let icon = getIcon(className,'delete-icon','skills')
+                    li.insertBefore(icon,li.firstChild);
+                }
+                
             }
         }
         
@@ -128,6 +141,6 @@ export class skillsController{
         this.view.removeIcon();  
     }
     addEditIconHandler(){
-        this.view.addIcon('fa-pencil');
+        this.view.addIcon('fa-star');
     }
 }

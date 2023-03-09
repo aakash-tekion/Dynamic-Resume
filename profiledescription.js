@@ -51,8 +51,7 @@ export class ProfileView{
         element = getElement('.',element);
         console.log(prev,element)
         if(!getElement('#','textarea-tag')){
-            element.innerHTML = `<textarea rows="5" cols="50" id='textarea-tag'>
-            </textarea>`;
+            element.innerHTML = `<textarea rows="5" cols="50" id='textarea-tag'>${model.user['profile-description']}</textarea>`;
             attachEvent('blur','textarea-tag',function(event){
                 model.setPersonalDescription(prev,event.target.value);
                 element.innerHTML = '';

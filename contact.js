@@ -19,6 +19,13 @@ export class ContactInfo{
 }
 //view
 export class ContactView{ 
+    constructor(){
+        this.icons = {
+            'email':'fa-envelope',
+            'phone':'fa-phone',
+            'address':'fa-address-book'
+        }
+    }
     removeIcon(model){
         for(let key of Object.keys(model.user)){
             let element = document.querySelector(`#${key}-icon`);
@@ -28,20 +35,25 @@ export class ContactView{
         }
 
     }
-    addIcon(className,model){
+    addIcon(className='',model){
         this.removeIcon(model);
+        let flag = 0;
+        if(className === ''){
+            flag = 1;
+        }
         for(let key of Object.keys(model.user)){
+            if(flag === 1){
+                className = this.icons[key];
+            }
             let parent = document.querySelector(`.${key}`);
             let icon = getIcon(className,`${key}-icon`,'',`${key}-icon`,'');
-            // console.log(parent,parent.firstChild);
             parent.insertBefore(icon,parent.firstChild);
         }
         
-
     }
-    addDeleteIcon(className,model){
-        this.removeIcon(model);
-        this.addIcon(className,model);
+    addDeleteIcon(model){
+        this.addIcon('fa-trash',model)
+        
     }
     removeElement(element,model){
         model.resetContactDetails(element);
@@ -112,9 +124,9 @@ export class contactController{
         this.view.removeIcon(this.model);
     }
     addEditIconHandler(){
-        this.view.addIcon('fa-pencil',this.model);
+        this.view.addIcon('',this.model);
     }
     addDeleteIconHandler(){
-        this.view.addDeleteIcon('fa-trash',this.model);
+        this.view.addDeleteIcon(this.model);
     }
 }

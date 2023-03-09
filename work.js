@@ -54,7 +54,7 @@ export class WorkExperienceView{
     workListUpdate(model){
         this.WorkExperienceList.innerHTML = '';
         let start;
-        model.WorkExperienceList.map(ele=>{
+        model.WorkExperienceList.forEach(ele=>{
             let parent = document.createElement('li')
 
             let firstchild = document.createElement('div');
@@ -88,9 +88,12 @@ export class WorkExperienceView{
         }
         if(this.WorkExperienceList.hasChildNodes()){
             for(let div of this.WorkExperienceList.childNodes){
-                let icon = getIcon(className,'delete-icon','work');
-                icon.style.display = 'inline-block';
-                div.firstChild.insertBefore(icon,div.firstChild.firstChild);
+                if(div.firstChild.firstChild && div.firstChild.firstChild.tagName !== 'I'){
+                    let icon = getIcon(className,'delete-icon','work');
+                    icon.style.display = 'inline-block';
+                    div.firstChild.insertBefore(icon,div.firstChild.firstChild);
+                }
+                
             }
         }
     }
@@ -128,6 +131,6 @@ export class workExperienceController{
         this.view.removeIcon();
     }
     addEditIconHandler(){
-        this.view.addIcon('fa-pencil');
+        this.view.addIcon('fa-briefcase');
     }
 }

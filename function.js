@@ -16,7 +16,7 @@ export function MapFromForm(form){
 }
 export function formClose(personalController,contactController,profileController){
     let forms = ['work-experience-form','skills-form','education-form'];
-    forms.map(ele => {
+    forms.forEach(ele => {
         let form = document.querySelector('.'+ele)
         if(form){
             form.remove();
@@ -46,7 +46,7 @@ export function findObj(list,obj){
         objStr+=(key+':'+value.toLowerCase());
         objStr+=';'
     }
-    list.map(ele => {
+    list.forEach(ele => {
         let temp = '';
         for(let [key,value] of Object.entries(ele)){
             temp+=(key+':'+value.toLowerCase());
@@ -77,6 +77,7 @@ export function getInputElement(type,value = '',id,classname='',controller=''){
     return input
 }
 export function attachEvent(event,elementid,callfn){
+
     let element = document.getElementById(elementid)
     if(element){
         element.addEventListener(event,callfn);
@@ -84,12 +85,12 @@ export function attachEvent(event,elementid,callfn){
 }
 export function formGenerator(elements,class_name,callfn){
     let form = document.createElement('form');
-    elements.map((ele)=>{
+    elements.forEach((ele)=>{
         let child;
         if(ele[1]=='select'){
             child = document.createElement('select');
             child.setAttribute('name',ele[0]);
-            ele[3].map((opt)=>{
+            ele[3].forEach((opt)=>{
                 let temp = document.createElement('option');
                 temp.setAttribute('value',opt);
                 temp.text = opt;

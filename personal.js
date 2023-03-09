@@ -20,10 +20,11 @@ export class PersonalInfo{
 //view
 export class PersonalView{
     constructor(){
-        this.name = getElement('.','name');
-        this.role = getElement('.','role');
+        this.icons = {
+            'name':'fa-user',
+            'role':'fa-user-md'
+        }
     }
-  
     removeElement(element,model){
         model.resetPersonalDetails(element);
         let htmlElement = getElement('.',element);
@@ -34,19 +35,23 @@ export class PersonalView{
         span.appendChild(document.createTextNode(element.charAt(0).toUpperCase()+element.slice(1)));
         htmlElement.appendChild(span);
     }
-    addIcon(className){
-        let icon = document.querySelector('#name-icon');
-        if(icon){
-            icon.remove();
+    addIcon(className=''){
+        let flag = 0;
+        if(className === ''){
+            flag = 1
         }
-        let newIcon = getIcon(className,'name-icon','','name-icon');
-        this.name.insertBefore(newIcon,this.name.firstChild);
-        icon = document.querySelector('#role-icon');
-        if(icon){
-            icon.remove();
+        for(let key of Object.keys(this.icons)){
+            if(flag === 1){
+                className = this.icons[key];
+            }
+            let icon = document.querySelector(`#${key}-icon`);
+            let parent = document.querySelector(`.${key}`);
+            if(icon){
+                icon.remove();
+            }
+            let newIcon = getIcon(className,`${key}-icon`,'',`${key}-icon`);
+            parent.insertBefore(newIcon,parent.firstChild);
         }
-        newIcon = getIcon(className,'role-icon','','role-icon');
-        this.role.insertBefore(newIcon,this.role.firstChild);
     }
     removeIcon(model){
         for(let key of Object.keys(model.user)){
@@ -72,9 +77,7 @@ export class PersonalView{
         else{
             parent.appendChild(document.createTextNode(elementId.charAt(0).toUpperCase()+elementId.slice(1)))
         }
-        
     }
-    
     elementHandler(element,model){
         let prev = element;
         element = getElement('.',element);
@@ -94,7 +97,6 @@ export class PersonalView{
         }
         else{
             getElement('#',prev+'-input').remove();
-            
             if(model.user[prev]===''){
                 let span = document.createElement('span');
                 span.appendChild(document.createTextNode(prev.charAt(0).toUpperCase()+prev.slice(1)));
@@ -129,7 +131,7 @@ export class personalController{
         this.view.removeIcon(this.model);
     }
     addEditIconHandler(){
-        this.view.addIcon('fa-pencil');
+        this.view.addIcon();
     }
     addDeleteIconHandler(){
         this.view.addDeleteIcon('fa-trash',this.model);
