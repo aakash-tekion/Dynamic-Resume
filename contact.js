@@ -1,5 +1,4 @@
 import {getIcon,formGenerator,attachEvent,getInputElement,getElement,getDataAttribute,MapFromForm,findObj,month} from './function.js';
-export let personalInfoElements = ['#name-icon','#role-icon'];
 export let contactInfoElements = ['#email-icon','#address-icon','#phone-icon']
 //model
 export class ContactInfo{
@@ -49,11 +48,9 @@ export class ContactView{
             let icon = getIcon(className,`${key}-icon`,'',`${key}-icon`,'');
             parent.insertBefore(icon,parent.firstChild);
         }
-        
     }
     addDeleteIcon(model){
-        this.addIcon('fa-trash',model)
-        
+        this.addIcon('fa-trash',model);    
     }
     removeElement(element,model){
         model.resetContactDetails(element);
@@ -104,7 +101,7 @@ export class ContactView{
             element.lastChild.innerHTML = '';
             element.lastChild.appendChild(document.createTextNode(prev.charAt(0).toUpperCase()+prev.slice(1)+" : "+model.user[prev]));
         }
-    } 
+    }
 }
 export class contactController{
     constructor(model,view){

@@ -45,7 +45,6 @@ export class ProfileView{
         this.removeIcon(model);
         this.addIcon(className);
     }
-    
     elementHandler(element,model){
         let prev = element;
         element = getElement('.',element);
@@ -66,7 +65,6 @@ export class ProfileView{
         }   
     } 
 }
-
 //Controller
 export class profileController{
     constructor(model,view){

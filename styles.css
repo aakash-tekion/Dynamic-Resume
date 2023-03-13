@@ -1,9 +1,6 @@
 .resume{
     border: 1px solid black;
     width:70%;
-    /* margin:50px auto; */
-    /* display: flex;
-    flex-direction: column; */
     overflow:auto;
     height:100%
 }
@@ -41,7 +38,10 @@
 .right-col-1{
     width:60%;
 }
-
+#main-edit-btn,#main-preview-btn,#main-delete-btn{
+    background-color: #faf9f8;
+    border:1px solid black;
+}
 body{
     margin:0;
     padding: 0;
@@ -75,7 +75,7 @@ i{
 #textarea-tag{
     width:100%;
 }
-#file-btn{
+#file-btn,#file-delete{
     position:absolute;
     bottom:7px;
 }

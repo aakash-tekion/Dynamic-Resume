@@ -3,11 +3,10 @@ import { EducationInfo,EducationView,educationController } from "./education.js"
 import { SkillsView,SkillsInfo,skillsController } from "./skills.js";
 import { WorkExperienceInfo,WorkExperienceView,workExperienceController } from "./work.js";
 import { attachEvent,getDataAttribute ,getElement,formClose} from "./function.js";
-import { personalInfoElements,contactInfoElements } from "./personal.js";
+import { personalInfoElements } from "./personal.js";
+import { contactInfoElements } from "./contact.js";
 import { ContactInfo,ContactView,contactController } from "./contact.js";
 import { profileController,ProfileInfo,ProfileView } from "./profiledescription.js";
-let iconRemove = ['#education-icon','#skills-icon','#work-icon'];
-let fileInputBtn = document.querySelector('#file-input');
 let personalModel = new PersonalInfo();
 let personalView = new PersonalView();
 let educationModel = new EducationInfo();
@@ -26,13 +25,22 @@ let personalInfoController = new personalController(personalModel,personalView);
 let educationInfoController = new educationController(educationModel,educationView);
 let profileDescriptionController = new profileController(profileInfo,profileView);
 let workInfoController = new workExperienceController(workModel,workView);
-document.querySelector('#file-btn').addEventListener('click',function(){
-    personalInfoController.profileImageHandler(fileInputBtn);
-});
-fileInputBtn.addEventListener('change',function(event){
-    document.querySelector('.profile-img').src = URL.createObjectURL(event.target.files[0]);
-});
 function eventHandlers(){
+    if(document.querySelector('#file-btn')){
+        document.querySelector('#file-btn').addEventListener('click',function(){
+            personalInfoController.profileImageHandler(document.querySelector('#file-input'));
+        });
+    }
+    if(document.querySelector('#file-input')){
+        document.querySelector('#file-input').addEventListener('change',function(event){
+            personalInfoController.setProfileImageHandler(event.target);
+        });
+    }
+    if(document.querySelector('#file-delete')){
+        document.querySelector('#file-delete').addEventListener('click',function(){
+            personalInfoController.resetProfileImageHandler();
+        });
+    }
     personalInfoElements.forEach((ele)=>{
         let element = document.querySelector(ele);
         element.addEventListener('click',function(event){
@@ -58,7 +66,6 @@ function eventHandlers(){
     attachEvent('click','education-icon',function(){
         let element = getElement('.','education-form');
         if(!element){
-            //formClose();
             educationInfoController.educationInfoHandler();
         }
         else{
@@ -76,7 +83,6 @@ function eventHandlers(){
     attachEvent('click','skills-icon',function(){
         let element = getElement('.','skills-form');
         if(!element){
-            //formClose();
             skillsInfoController.skillsInfoHandler();
         }
         else{
@@ -86,7 +92,6 @@ function eventHandlers(){
     attachEvent('click','work-icon',function(){
         let element = getElement('.','work-experience-form');
         if(!element){
-            //formClose();
             workInfoController.WorkExperienceInfoHandler();
         }
         else{
@@ -141,6 +146,5 @@ attachEvent('click','main-preview-btn',function(){
     workInfoController.removeIconHandler();
     skillsInfoController.removeIconHandler();
     profileDescriptionController.removeIconHandler();
-
 })
 eventHandlers();

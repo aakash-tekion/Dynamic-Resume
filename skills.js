@@ -15,11 +15,11 @@ export class SkillsInfo{
         return bool;
     }
     setSkills(form){
-        let obj = MapFromForm(form)
+        let obj = MapFromForm(form);
         let bool = this.findObj(obj);
         if(!bool){
             this.skillsList.push(obj);
-        }
+        }    
     }
     removeSkillsDetails(obj){
         this.skillsList = this.skillsList.filter((ele)=>{
@@ -85,13 +85,11 @@ export class SkillsView{
         if(this.skillsList.hasChildNodes()){
             for(let li of this.skillsList.childNodes){
                 if(li.firstChild.tagName !== 'I'){
-                    let icon = getIcon(className,'delete-icon','skills')
+                    let icon = getIcon(className,'delete-icon','skills');
                     li.insertBefore(icon,li.firstChild);
                 }
-                
             }
         }
-        
     }
     skillsFormBind(model){
         if(!document.querySelector('.skills-form')){
@@ -106,9 +104,15 @@ export class SkillsView{
             `;
             form.addEventListener('submit',(event)=>{
                 event.preventDefault();
-                model.setSkills(event.target);
-                this.skillsListUpdate(model);
-                event.target.remove();
+                if(event.target.skill.value !== ''){
+                    model.setSkills(event.target);
+                    this.skillsListUpdate(model);
+                    event.target.remove();
+                }
+                else{
+                    alert('Enter some skill');
+                }
+                
             });
             form.classList.add('skills-form');
             this.skillsContainer.appendChild(form);

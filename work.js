@@ -50,13 +50,11 @@ export class WorkExperienceView{
         let header = this.WorkExperienceContainer.firstChild.nextSibling;
         header.insertBefore(newIcon,header.firstChild);
     }
-    
     workListUpdate(model){
         this.WorkExperienceList.innerHTML = '';
         let start;
         model.WorkExperienceList.forEach(ele=>{
-            let parent = document.createElement('li')
-
+            let parent = document.createElement('li');
             let firstchild = document.createElement('div');
             let p = document.createElement('p');
             p.textContent = ele['start-year']+' - '+ele['end-year'];
@@ -71,7 +69,6 @@ export class WorkExperienceView{
                     child = document.createElement('p');
                     child.innerText = value;
                 }
-                
                 if(child){
                     parent.appendChild(child);
                 }  
@@ -79,7 +76,6 @@ export class WorkExperienceView{
             parent.setAttribute('data-obj',JSON.stringify(ele));
             this.WorkExperienceList.appendChild(parent);
         });
-
     }
     addDeleteIcon(className){
         let icon = document.querySelector('#work-icon');
@@ -92,8 +88,7 @@ export class WorkExperienceView{
                     let icon = getIcon(className,'delete-icon','work');
                     icon.style.display = 'inline-block';
                     div.firstChild.insertBefore(icon,div.firstChild.firstChild);
-                }
-                
+                } 
             }
         }
     }

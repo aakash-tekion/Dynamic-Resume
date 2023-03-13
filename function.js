@@ -1,6 +1,5 @@
 export let month = [ "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December" ];
-
 export function MapFromForm(form){
     let formData = new FormData(form);
     let obj = {
@@ -77,7 +76,6 @@ export function getInputElement(type,value = '',id,classname='',controller=''){
     return input
 }
 export function attachEvent(event,elementid,callfn){
-
     let element = document.getElementById(elementid)
     if(element){
         element.addEventListener(event,callfn);
