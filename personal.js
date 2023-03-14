@@ -1,8 +1,10 @@
-import {getIcon,formGenerator,attachEvent,getInputElement,getElement,getDataAttribute,MapFromForm,findObj,month} from './function.js';
+import {getIcon,attachEvent,getInputElement,getElement} from './function.js';
+import { BasicModel } from './parentmodel.js';
 export let personalInfoElements = ['#name-icon','#role-icon'];
 //model
-export class PersonalInfo{
+export class PersonalInfo extends BasicModel{
     constructor(){
+        super();
         this.user = {
         'name' :'',
         'role':'',
@@ -10,10 +12,10 @@ export class PersonalInfo{
         }
     }
     setPersonalDetails(key,value){
-        this.user[key] = value;
+        super.setDetails(this.user,key,value);
     }
     resetPersonalDetails(key){
-        this.user[key]='';
+        super.resetDetails(this.user,key);
     }
 }
 //view
@@ -55,8 +57,8 @@ export class PersonalView{
                 fileInput.setAttribute('id','file-input');
                 fileInput.setAttribute('hidden','hidden');
                 fileInput.setAttribute('type','file');
+                fileInput.setAttribute('accept','image/*');
                 this.leftTopContainer.appendChild(fileInput);
-                
             }
             if(!document.querySelector('#file-btn')){
                 let fileButton = document.createElement('button');
@@ -96,7 +98,6 @@ export class PersonalView{
         let element = document.querySelector('.'+elementId).lastChild;
         let parent = document.querySelector('.'+elementId)
         element.remove()
-        // console.log(model)
         if(model.user[elementId]!==''){
             parent.appendChild(document.createTextNode(model.user[elementId]))
         }
@@ -113,12 +114,18 @@ export class PersonalView{
             element.appendChild(iconElement);
             element.appendChild(getInputElement('text', model.user[prev] === ''?'':model.user[prev],prev+'-input','input-tag','personal-controller'));
             attachEvent('blur',prev+'-input',function(event){
-                model.setPersonalDetails(prev,event.target.value);
+                console.log(event.target.value);
                 element.innerHTML = '';
                 element.appendChild(iconElement);
                 let span = document.createElement('span');
-                span.appendChild(document.createTextNode(model.user[prev]));
-                element.appendChild(span)
+                model.setPersonalDetails(prev,event.target.value);
+                if(event.target.value !== ''){
+                    span.appendChild(document.createTextNode(model.user[prev]));
+                }
+                else{
+                    span.appendChild(document.createTextNode(prev.charAt(0).toUpperCase()+prev.slice(1)));
+                }
+                element.appendChild(span);
             })
         }
         else{
@@ -134,7 +141,7 @@ export class PersonalView{
         } 
     } 
     resetProfileImage(){
-        document.querySelector('.profile-img').src = './profileavatar.jpeg';
+        document.querySelector('.profile-img').src = './images/profileavatar.jpeg';
     }
     setProfileImage(file){
         this.profileImage.src = URL.createObjectURL(file);

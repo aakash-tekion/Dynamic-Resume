@@ -1,25 +1,23 @@
-import {getIcon,formGenerator,attachEvent,getInputElement,getElement,getDataAttribute,MapFromForm,findObj,month} from './function.js';
+import {getIcon,formGenerator,getElement,MapFromForm,findObj} from './function.js';
+import { BasicModel } from './parentmodel.js';
+import { BasicView } from './parentview.js';
 //model
-export class WorkExperienceInfo{
+export class WorkExperienceInfo extends BasicModel{
     constructor(){
+        super();
         this.WorkExperienceList = [];
     }
     setWorkExperience(form){
-        let obj = MapFromForm(form)
-        let bool = findObj(this.WorkExperienceList,obj);
-        if(!bool){
-            this.WorkExperienceList.push(obj);
-        }
+        super.setDetails(this.WorkExperienceList,form)
     }
     removeWorkDetails(obj){  
-        this.WorkExperienceList = this.WorkExperienceList.filter((ele)=>{
-            return JSON.stringify(ele)!== obj;
-        })
+        this.WorkExperienceList = super.removeDetails(this.WorkExperienceList,obj);
     }
 }
 //View
-export class WorkExperienceView{
+export class WorkExperienceView extends BasicView{
     constructor(){
+        super();
         this.WorkExperienceContainer = getElement('.','work-experience-container');
         this.WorkExperienceList = getElement('.','work-experience-list');
         this.WorkExperienceList.innerHTML = '';
@@ -33,22 +31,12 @@ export class WorkExperienceView{
         ]
     }
     
-    removeIcon(){
-        let icon = document.querySelector('#work-icon');
-        if(icon){
-            icon.remove()
-        }
-        for(let div of this.WorkExperienceList.childNodes){
-            if(div.firstChild.firstChild.tagName === 'I'){
-                div.firstChild.firstChild.remove();
-            }  
-        }
+    removeWorkIcon(id){
+        super.removeIcon(id,this.WorkExperienceList)
     }
-    addIcon(className){
-        this.removeIcon();
-        let newIcon = getIcon(className,'work-icon');
-        let header = this.WorkExperienceContainer.firstChild.nextSibling;
-        header.insertBefore(newIcon,header.firstChild);
+    addWorkIcon(className,id){
+        super.removeIcon(id,this.WorkExperienceList);
+        super.addIcon(className,id,this.WorkExperienceContainer,this.WorkExperienceList)
     }
     workListUpdate(model){
         this.WorkExperienceList.innerHTML = '';
@@ -78,19 +66,7 @@ export class WorkExperienceView{
         });
     }
     addDeleteIcon(className){
-        let icon = document.querySelector('#work-icon');
-        if(icon){
-            icon.remove();
-        }
-        if(this.WorkExperienceList.hasChildNodes()){
-            for(let div of this.WorkExperienceList.childNodes){
-                if(div.firstChild.firstChild && div.firstChild.firstChild.tagName !== 'I'){
-                    let icon = getIcon(className,'delete-icon','work');
-                    icon.style.display = 'inline-block';
-                    div.firstChild.insertBefore(icon,div.firstChild.firstChild);
-                } 
-            }
-        }
+        super.addDeleteIcon('work-icon',className,this.WorkExperienceList)
     }
     workExperienceFormBind(model){
         if(!document.querySelector('.work-experience-form')){
@@ -123,9 +99,9 @@ export class workExperienceController{
         this.model.removeWorkDetails(obj);
     }
     removeIconHandler(){
-        this.view.removeIcon();
+        this.view.removeWorkIcon('work-icon');
     }
     addEditIconHandler(){
-        this.view.addIcon('fa-briefcase');
+        this.view.addWorkIcon('fa-briefcase','work-icon');
     }
 }

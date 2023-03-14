@@ -2,11 +2,13 @@ import { PersonalInfo,personalController,PersonalView } from "./personal.js";
 import { EducationInfo,EducationView,educationController } from "./education.js";
 import { SkillsView,SkillsInfo,skillsController } from "./skills.js";
 import { WorkExperienceInfo,WorkExperienceView,workExperienceController } from "./work.js";
-import { attachEvent,getDataAttribute ,getElement,formClose} from "./function.js";
+import { attachEvent,getDataAttribute ,getElement,formClose, moveSlider} from "./function.js";
 import { personalInfoElements } from "./personal.js";
 import { contactInfoElements } from "./contact.js";
 import { ContactInfo,ContactView,contactController } from "./contact.js";
 import { profileController,ProfileInfo,ProfileView } from "./profiledescription.js";
+import { addAnimation,removeAnimation} from "./function.js";
+let resume =  document.querySelector('.resume'); 
 let personalModel = new PersonalInfo();
 let personalView = new PersonalView();
 let educationModel = new EducationInfo();
@@ -100,6 +102,7 @@ function eventHandlers(){
     });
 }
 attachEvent('click','main-delete-btn',function(){
+    removeAnimation(resume,'resume-animation');
     formClose(personalInfoController,contactInfoController,profileDescriptionController);
     personalInfoController.addDeleteIconHandler();
     profileDescriptionController.addDeleteIconHandler();
@@ -128,8 +131,11 @@ attachEvent('click','main-delete-btn',function(){
         })
     }
     eventHandlers();
+    moveSlider(2);
+    addAnimation(resume,true);
 })
 attachEvent('click','main-edit-btn',function(){
+    removeAnimation(resume,'resume-animation');
     personalInfoController.addEditIconHandler();
     contactInfoController.addEditIconHandler();
     profileDescriptionController.addEditIconHandler();
@@ -137,8 +143,11 @@ attachEvent('click','main-edit-btn',function(){
     educationInfoController.addEditIconHandler();
     skillsInfoController.addEditIconHandler();
     eventHandlers();
+    moveSlider(1);
+    addAnimation(resume,true);
 })
 attachEvent('click','main-preview-btn',function(){
+    removeAnimation(resume,'resume-animation');
     formClose(personalInfoController,contactInfoController,profileDescriptionController);
     personalInfoController.removeIconHandler();
     contactInfoController.removeIconHandler();
@@ -146,5 +155,9 @@ attachEvent('click','main-preview-btn',function(){
     workInfoController.removeIconHandler();
     skillsInfoController.removeIconHandler();
     profileDescriptionController.removeIconHandler();
+    moveSlider(3);
+    addAnimation(resume,true);
+    
 })
 eventHandlers();
+

@@ -1,10 +1,16 @@
 export let month = [ "January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December" ];
+let prevButtonId = 1;
+let sliderCurrentTop = 0;
 export function MapFromForm(form){
     let formData = new FormData(form);
     let obj = {
     }
     for (let [key, value] of formData) {
+        if(value === '' || value === undefined){
+            alert('You have failed to enter the neccessary fields');
+            return null;
+        }
         if(key == 'start-year'||key == 'end-year'){
             let temp = value.split('-');
             value = month[temp[1]-1]+', '+temp[0]
@@ -72,7 +78,6 @@ export function getInputElement(type,value = '',id,classname='',controller=''){
     input.setAttribute('id',id);
     input.setAttribute('class',classname);
     input.setAttribute('data-controller',controller)
-    // let input = `<input type=${type} id='${id}' placeholder = '${placeholder}'}/>`
     return input
 }
 export function attachEvent(event,elementid,callfn){
@@ -139,4 +144,28 @@ export function getIcon(classname,id,data='',name=''){
     icon.classList.add('fa');
     icon.classList.add(classname);
     return icon
+}
+export function removeAnimation(element,animation){
+    if(element.classList.contains(animation)){
+        element.classList.remove(animation);
+    }
+
+}
+export function addAnimation(element,flag){
+    element.classList.add('resume-animation');
+    if(flag){
+        setTimeout(()=>{
+            element.classList.remove('resume-animation');
+        },1000);
+    }
+}
+export function moveSlider(buttonId){
+    let slider = document.querySelector('.slider');
+    let toMove = (buttonId-prevButtonId)*50;
+    // console.log(toMove,buttonId,prevButtonId);
+    let style = [{transform:`translateY(${toMove+sliderCurrentTop}px)`}]
+    let options = {duration:500,fill:"forwards"}
+    slider.animate(style,options);
+    sliderCurrentTop = toMove+sliderCurrentTop;
+    prevButtonId = buttonId;
 }

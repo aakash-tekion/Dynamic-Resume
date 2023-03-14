@@ -1,34 +1,23 @@
-import {getIcon,formGenerator,attachEvent,getInputElement,getElement,getDataAttribute,MapFromForm,findObj,month} from './function.js';
+import {getIcon,formGenerator,getElement,findObj,month, MapFromForm} from './function.js';
+import { BasicModel } from './parentmodel.js';
+import { BasicView } from './parentview.js';
 //model
-export class EducationInfo{
+export class EducationInfo extends BasicModel{
     constructor(){
+        super();
         this.educationList = [];
     }
     setEducationDetails(form){
-        let formData = new FormData(form);
-        let obj = {
-        }
-        for (let [key, value] of formData) {
-            if(key == 'start-year'||key == 'end-year'){
-                let temp = value.split('-');
-                value = month[temp[1]-1]+', '+temp[0]
-            }
-            obj[key] = value;
-        }
-        let bool = findObj(this.educationList,obj);
-        if(!bool){
-            this.educationList.push(obj);
-        }
+        super.setDetails(this.educationList,form)
     }
     removeEducationDetails(obj){
-        this.educationList = this.educationList.filter((ele)=>{
-            return JSON.stringify(ele)!== obj;
-        })
+        this.educationList = super.removeDetails(this.educationList,obj);
     }
 }
 //View
-export class EducationView{
+export class EducationView extends BasicView{
     constructor(){
+        super();
         this.educationContainer = getElement('.','education-container');
         this.educationListElement = getElement('.','education-list');
         this.educationListElement.innerHTML = '';
@@ -43,23 +32,14 @@ export class EducationView{
             ['end-year','month','Till']
         ]
     }
-    removeIcon(){
-        let icon = document.querySelector('#education-icon');
-        if(icon){
-            icon.remove()
-        }
-        for(let div of this.educationListElement.childNodes){
-            if(div.firstChild.firstChild.tagName === 'I'){
-                div.firstChild.firstChild.remove();
-            }  
-        }
+    removeEducationIcon(id){
+        super.removeIcon(id,this.educationListElement)
     }
-    addIcon(className){
-        this.removeIcon();
-        let newIcon = getIcon(className,'education-icon');
-        let header = this.educationContainer.firstChild.nextSibling;
-        header.insertBefore(newIcon,header.firstChild);    
+    addEducationIcon(className,id){
+        super.removeIcon(id,this.educationListElement);
+        super.addIcon(className,id,this.educationContainer,this.educationListElement)
     }
+    
     EducationListUpdate(model){
         this.educationListElement.innerHTML='';
         model.educationList.forEach(ele=>{
@@ -94,20 +74,8 @@ export class EducationView{
             this.educationListElement.appendChild(educationForm);   
     }
     addDeleteElement(className){
-        let icon = document.querySelector('#education-icon');
-        if(icon){
-            icon.remove();
-        }
-        if(this.educationListElement.hasChildNodes()){
-            for(let div of this.educationListElement.childNodes){
-                if(div.firstChild.firstChild && div.firstChild.firstChild.tagName !== 'I'){
-                    let icon = getIcon(className,'delete-icon','education');
-                    icon.style.display = 'inline-block';
-                    div.firstChild.insertBefore(icon,div.firstChild.firstChild);
-                }
-                
-            }
-        }
+        super.addDeleteIcon('work-icon',className,this.educationListElement);
+        
     }
 }
 //Controller
@@ -126,10 +94,10 @@ export class educationController{
         this.model.removeEducationDetails(obj);
     }    
     removeIconHandler(){
-        this.view.removeIcon();
+        this.view.removeEducationIcon('education-icon');
     }
     addEditIconHandler(){
-        this.view.addIcon('fa-university');
+        this.view.addEducationIcon('fa-university','education-icon');
     }
 }
 

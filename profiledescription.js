@@ -1,18 +1,20 @@
-import {getIcon,formGenerator,attachEvent,getInputElement,getElement,getDataAttribute,MapFromForm,findObj,month} from './function.js';
+import {getIcon,attachEvent,getElement} from './function.js';
+import { BasicModel } from './parentmodel.js';
 export let personalInfoElements = ['#name-icon','#role-icon','#profile-description-icon'];
 export let contactInfoElements = ['#email-icon','#address-icon','#phone-icon']
 //model
-export class ProfileInfo{
+export class ProfileInfo extends BasicModel{
     constructor(){
+        super();
         this.user = {
         'profile-description':''
         }
     }
     setPersonalDescription(key,value){
-        this.user[key] = value;
+        super.setDetails(this.user,key,value);
     }
     resetPersonalDescription(key){
-        this.user[key]='';
+        super.resetDetails(this.user,key);
     }
 }
 //view

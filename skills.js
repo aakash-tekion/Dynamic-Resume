@@ -1,4 +1,4 @@
-import {getIcon,formGenerator,attachEvent,getInputElement,getElement,getDataAttribute,MapFromForm,findObj,month} from './function.js';
+import {getIcon,MapFromForm} from './function.js';
 //model
 export class SkillsInfo{
     constructor(){

@@ -9,10 +9,16 @@
 </head> 
 <body>
     <div class='main-container'>
-        <div class="option-container center-col">
-            <button id="main-edit-btn">Edit Resume</button>
-            <button id="main-delete-btn">Delete Content</button>
-            <button id="main-preview-btn">Preview Content</button>
+        <div class="option-container center-row">
+            <div class="button-container">
+                <button class='side-btn' id="main-edit-btn">Edit Resume</button>
+                <button class='side-btn' id="main-delete-btn">Delete Content</button>
+                <button class='side-btn' id="main-preview-btn">Preview Content</button>
+            </div>
+            <div class="slider-container">
+                <div class="slider"></div>
+            </div>
+            
         </div>
         <div class="resume">
             <div class="col-1">
@@ -20,8 +26,8 @@
                 <div class="right-col-1"></div>
                 <div class="image-container">
                     <div class="left-part center-row">
-                        <img class="profile-img" data-name='profile-image-url' src="./profileavatar.jpeg">
-                        <input type="file" id="file-input" hidden/>
+                        <img class="profile-img" data-name='profile-image-url' src="./images/profileavatar.jpeg">
+                        <input type="file" id="file-input" accept="image/*" hidden/>
                         <button id="file-btn">Add</button>
                     </div>
                     
