@@ -1,196 +1,163 @@
-let personalInfoElements = ['#name-icon','#role-icon','#profile-description-icon'];
-let contactInfoElements = ['#email-icon','#address-icon','#phone-icon']
-let fileInputBtn = document.querySelector('#file-input');
-function getElement(selector,element){
-    console.log(selector+element)
-    return document.querySelector(selector+element);
-}
-function getDataAttribute(event){
-    let temp = event.target.getAttribute('data-name').split('-')
-    temp.pop();
-    return temp.join('-')
-}
-function getInputElement(type,placeholder=''){
-    let input = `<input type=${type} id='input-tag' placeholder = '${placeholder}'}/>`
-    return input
-}
-function attachEvent(event,elementid,callfn){
-    document.getElementById(elementid).addEventListener(event,callfn);
-}
-function formGenerator(elements,class_name,callfn){
-    let form = document.createElement('form');
-    elements.map((ele)=>{
-        let child;
-        if(ele[1]=='select'){
-            child = document.createElement('select');
-            ele[3].map((opt)=>{
-                let temp = document.createElement('option');
-                temp.setAttribute('value',opt);
-                child.appendChild(temp)
-            })
-        }
-        else{
-            child = document.createElement('input');
-            child.setAttribute('name',ele[0]);
-            child.setAttribute('type',ele[1]);
-            child.setAttribute('placeholder',ele[2])
-        }
-        form.appendChild(child);
-    });
-    form.addEventListener('submit',callfn);
-    form.classList.add(class_name);
-    return form;
-
-}
-//model
-class PersonalInfo{
-    constructor(){
-        this.user = {
-        'name' :'',
-        'role':'',
-        'profile-description':'',
-        'email':'',
-        'phone':'',
-        'address':'',
-        'profile-image-url':''
-        }
-    }
-    setPersonalDetails(key,value){
-        this.user[key] = value;
-    }
-}
-class EducationInfo{
-    constructor(){
-        this.educationList = [];
-    }
-    setEducationDetails(){
-        let obj = {
-            'institution_name':'',
-
-        }
-    }
-}
-//view
-class PersonalView{
-    constructor(){
-        this.placeholderMapping = {
-            'name':'e.g. Aakash',
-            'role':'e.g. Software Engineer',
-            'email':'e.g. aakash@gmail.com',
-            'phone':'e.g. +91',
-            'address':'e.g. ACS layout,Bengaluru'
-        }
-    }   
-    elementHandler(element,model){
-        // console.log(element)
-        let prev = element;
-        element = getElement('.',element);
-        let elementId = '#'+prev+'-icon';
-        let iconElement = getElement('#',prev+'-icon');
-        if(contactInfoElements.includes(elementId)){
-            element.innerHTML = `<i class="fa fa-pencil ${prev+"-icon"}" data-name=${prev+"-icon"}></i>`+prev.charAt(0).toUpperCase()+prev.slice(1)+' : '+getInputElement('text',this.placeholderMapping[prev])
-            attachEvent('change','input-tag',function(event){
-                model.setPersonalDetails(prev,event.target.value);
-                element.innerHTML = '';
-                element.appendChild(iconElement);
-                element.appendChild(document.createTextNode(prev.charAt(0).toUpperCase()+prev.slice(1)+" : "));
-                element.appendChild(document.createTextNode(model.user[prev]));
-            })
-        
-        }
-        else if(personalInfoElements.includes(elementId)){
-            if (prev!=='profile-description'){
-                element.innerHTML = getInputElement('text', this.placeholderMapping[prev])
-                attachEvent('change','input-tag',function(event){
-                    model.setPersonalDetails(prev,event.target.value);
-                    element.innerHTML = '';
-                    element.appendChild(iconElement);
-                    element.appendChild(document.createTextNode(model.user[prev]));
-                })
-            }
-            else{
-                element.innerHTML = `<textarea rows="5" cols="50" id='textarea-tag'>
-                </textarea>`
-                attachEvent('change','textarea-tag',function(event){
-                    model.setPersonalDetails(prev,event.target.value);
-                    element.innerHTML = '';
-                    element.appendChild(document.createTextNode(model.user[prev]));
-                });
-            }
-        }
-    } 
-}
-class EducationView{
-    constructor(){
-        this.educationListElement = getElement('.','education-list');
-        this.formContents = [
-            ['institution-name','text','Institution Name'],
-            ['degree','select','Degree',['Higher Secondary Education','Bachelor of Arts','Bachelor of Science',
-            'Bachelor of Engineering','Master of Engineering','Master of Arts','Master of Science','BBA','MBA',
-            'Ph.D.']],
-            ['field-of-study','text','Field of study'],
-            ['location','text','Location'],
-            ['start-year','month','Start'],
-            ['end-year','month','End']
-        ]
-    }
-    EducationFormBind(model){
-
-        let educationForm = formGenerator(this.formContents,'education-form',function(event){
-            event.preventDefault();
-        });
-        this.educationListElement.appendChild(educationForm);
-    }
-
-}
-//Controller
-class personalController{
-    constructor(model,view){
-        this.model = model,
-        this.view = view
-    }
-    personalInfoHandler(element){
-        this.view.elementHandler(element,this.model);
-    }
-    profileImageHandler(selector){
-        selector.click();
-    }
-    contactInfoHandler(element){
-        this.view.contactElementHandler(element,this.model);
-    }
-}
-class educationController{
-    constructor(model,view){
-        this.model = model,
-        this.view = view
-    }
-    educationInfoHandler(){
-        this.view.EducationFormBind(this.model);
-    }
-}
+import { PersonalInfo,personalController,PersonalView } from "./personal.js";
+import { EducationInfo,EducationView,educationController } from "./education.js";
+import { SkillsView,SkillsInfo,skillsController } from "./skills.js";
+import { WorkExperienceInfo,WorkExperienceView,workExperienceController } from "./work.js";
+import { attachEvent,getDataAttribute ,getElement,formClose, moveSlider} from "./function.js";
+import { personalInfoElements } from "./personal.js";
+import { contactInfoElements } from "./contact.js";
+import { ContactInfo,ContactView,contactController } from "./contact.js";
+import { profileController,ProfileInfo,ProfileView } from "./profiledescription.js";
+import { addAnimation,removeAnimation} from "./function.js";
+let resume =  document.querySelector('.resume'); 
 let personalModel = new PersonalInfo();
 let personalView = new PersonalView();
 let educationModel = new EducationInfo();
 let educationView = new EducationView();
+let skillsView = new SkillsView();
+let skillsModel = new SkillsInfo();
+let workModel = new WorkExperienceInfo();
+let workView = new WorkExperienceView();
+let profileInfo = new ProfileInfo();
+let profileView = new ProfileView();
+let contactModel = new ContactInfo();
+let contactView = new ContactView();
+let contactInfoController = new contactController(contactModel,contactView);
+let skillsInfoController = new skillsController(skillsModel,skillsView);
 let personalInfoController = new personalController(personalModel,personalView);
-let educationInfoController = new educationController(educationModel,educationView)
-personalInfoElements.map((ele)=>{
-    document.querySelector(ele).addEventListener('click',function(event){
-        personalInfoController.personalInfoHandler(getDataAttribute(event));
+let educationInfoController = new educationController(educationModel,educationView);
+let profileDescriptionController = new profileController(profileInfo,profileView);
+let workInfoController = new workExperienceController(workModel,workView);
+function eventHandlers(){
+    if(document.querySelector('#file-btn')){
+        document.querySelector('#file-btn').addEventListener('click',function(){
+            personalInfoController.profileImageHandler(document.querySelector('#file-input'));
+        });
+    }
+    if(document.querySelector('#file-input')){
+        document.querySelector('#file-input').addEventListener('change',function(event){
+            personalInfoController.setProfileImageHandler(event.target);
+        });
+    }
+    if(document.querySelector('#file-delete')){
+        document.querySelector('#file-delete').addEventListener('click',function(){
+            personalInfoController.resetProfileImageHandler();
+        });
+    }
+    personalInfoElements.forEach((ele)=>{
+        let element = document.querySelector(ele);
+        element.addEventListener('click',function(event){
+            if(element.classList.contains('fa-trash')){
+                personalInfoController.deleteHandler(getDataAttribute(event));
+            }
+            else{
+                personalInfoController.personalInfoHandler(getDataAttribute(event));
+            }
+        });   
+    })
+    contactInfoElements.forEach((ele)=>{
+        let element = document.querySelector(ele);
+        element.addEventListener('click',function(event){
+            if(element.classList.contains('fa-trash')){
+                contactInfoController.deleteHandler(getDataAttribute(event));
+            }
+            else{
+                contactInfoController.contactInfoHandler(getDataAttribute(event));
+            }
+        });
     });
+    attachEvent('click','education-icon',function(){
+        let element = getElement('.','education-form');
+        if(!element){
+            educationInfoController.educationInfoHandler();
+        }
+        else{
+            element.remove();
+        }
+    });
+    attachEvent('click','profile-description-icon',function(event){
+        if(event.target.classList.contains('fa-trash')){
+            profileDescriptionController.deleteHandler(getDataAttribute(event));
+        }
+        else{
+            profileDescriptionController.profileDescriptionHandler(getDataAttribute(event));
+        }
+    });
+    attachEvent('click','skills-icon',function(){
+        let element = getElement('.','skills-form');
+        if(!element){
+            skillsInfoController.skillsInfoHandler();
+        }
+        else{
+            element.remove();
+        }       
+    });
+    attachEvent('click','work-icon',function(){
+        let element = getElement('.','work-experience-form');
+        if(!element){
+            workInfoController.WorkExperienceInfoHandler();
+        }
+        else{
+            element.remove();
+        }   
+    });
+}
+attachEvent('click','main-delete-btn',function(){
+    removeAnimation(resume,'resume-animation');
+    formClose(personalInfoController,contactInfoController,profileDescriptionController);
+    personalInfoController.addDeleteIconHandler();
+    profileDescriptionController.addDeleteIconHandler();
+    contactInfoController.addDeleteIconHandler();
+    skillsInfoController.addDeleteIconHandler();
+    educationInfoController.addDeleteIconHandler();
+    workInfoController.addDeleteIconHandler();
+    for(let trash of document.querySelectorAll('#delete-icon')){
+        trash.addEventListener('click',function(event){
+            let model = event.target.getAttribute('data-model');
+            if(model === 'work'){
+                let data = event.target.parentElement.parentElement.getAttribute('data-obj');
+                event.target.parentElement.parentElement.remove();
+                workInfoController.deleteElementFromModel(data);
+            }
+            else if(model === 'skills'){
+                let data = event.target.parentElement.getAttribute('data-obj');
+                event.target.parentElement.remove();
+                skillsInfoController.deleteElementFromModel(data);
+            }
+            else if(model === 'education'){
+                let data = event.target.parentElement.parentElement.getAttribute('data-obj');
+                event.target.parentElement.parentElement.remove();
+                educationInfoController.deleteElementFromModel(data);
+            }
+        })
+    }
+    eventHandlers();
+    moveSlider(2);
+    addAnimation(resume,true);
 })
-contactInfoElements.map((ele)=>{
-    document.querySelector(ele).addEventListener('click',function(event){
-        personalInfoController.personalInfoHandler(getDataAttribute(event));
-    });
+attachEvent('click','main-edit-btn',function(){
+    removeAnimation(resume,'resume-animation');
+    personalInfoController.addEditIconHandler();
+    contactInfoController.addEditIconHandler();
+    profileDescriptionController.addEditIconHandler();
+    workInfoController.addEditIconHandler();
+    educationInfoController.addEditIconHandler();
+    skillsInfoController.addEditIconHandler();
+    eventHandlers();
+    moveSlider(1);
+    addAnimation(resume,true);
+})
+attachEvent('click','main-preview-btn',function(){
+    removeAnimation(resume,'resume-animation');
+    formClose(personalInfoController,contactInfoController,profileDescriptionController);
+    personalInfoController.removeIconHandler();
+    contactInfoController.removeIconHandler();
+    educationInfoController.removeIconHandler();
+    workInfoController.removeIconHandler();
+    skillsInfoController.removeIconHandler();
+    profileDescriptionController.removeIconHandler();
+    moveSlider(3);
+    addAnimation(resume,true);
+    
+})
+eventHandlers();
 
-});
-document.querySelector('#file-btn').addEventListener('click',function(){
-    personalInfoController.profileImageHandler(fileInputBtn);
-});
-fileInputBtn.addEventListener('change',function(event){
-    document.querySelector('.profile-img').src = URL.createObjectURL(event.target.files[0]);
-});
-document.getElementById('education-icon').addEventListener('click',function(){
-    educationInfoController.educationInfoHandler();
-});
